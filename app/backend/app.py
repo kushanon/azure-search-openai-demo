@@ -128,7 +128,13 @@ async def chat():
         async with aiohttp.ClientSession() as s:
             openai.aiosession.set(s)
             r = await impl.run_without_streaming(request_json["history"], request_json.get("overrides", {}))
-        return jsonify(r)
+        if isinstance(r, dict):
+            return jsonify(r)
+        else:
+            response = await make_response(format_as_ndjson(r))
+            response.timeout = None  # type: ignore
+            response.mimetype = "application/json-lines"
+            return response
     except Exception as e:
         logging.exception("Exception in /chat")
         return jsonify({"error": str(e)}), 500
