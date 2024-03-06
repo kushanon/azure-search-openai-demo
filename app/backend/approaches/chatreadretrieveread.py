@@ -169,7 +169,7 @@ If you cannot generate a search query, return only the number 0.
 
         # Allow client to replace the entire prompt, or to inject into the exiting prompt using >>>
         # クライアントがプロンプト全体を置き換えたり、>>を使用して終了するプロンプトに注入したりできるようにする。
-        prompt_override = overrides.get("prompt_override")
+        prompt_override = overrides.get("prompt_template")
         if prompt_override is None:
             system_message = self.system_message_chat_conversation.format(injected_prompt="", follow_up_questions_prompt=follow_up_questions_prompt)
         elif prompt_override.startswith(">>>"):
